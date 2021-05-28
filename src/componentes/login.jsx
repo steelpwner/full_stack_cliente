@@ -5,13 +5,14 @@ import {
 
 
 function Login(props) {
-    function keyEnterLogin(e) {
-        if (e.key === 13) {
-            props.login(userRef.current.value,passRef.current.value)   
-        }
-    }
     let userRef = useRef(null)
     let passRef = useRef(null)
+
+    function keyEnterLogin(e) {
+        if (e.keyCode === 13) {
+            props.login(userRef.current.value,passRef.current.value)
+        }
+    }
     useEffect(() => {
         document.title = "Inicio de sesión"
     })
@@ -27,7 +28,7 @@ function Login(props) {
                     <div className="u-text-center"><h4>Iniciar sesión</h4></div>
                     <div className="row ignore-screen level">
                         <div className="col-3 ignore-screen level-item"><p className="m-0">Usuario:</p></div>
-                        <div className="col-9 ignore-screen level-item"><input type="text" ref={userRef} onKeyDown={keyEnterLogin}/></div>
+                        <div className="col-9 ignore-screen level-item"><input type="text" ref={userRef} autoFocus onKeyDown={keyEnterLogin}/></div>
                     </div>
                     <div className="row ignore-screen level">
                         <div className="col-3 ignore-screen level-item"><p className="m-0">Contraseña:</p></div>

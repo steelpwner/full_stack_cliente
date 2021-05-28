@@ -1,4 +1,5 @@
-import React, {Fragment, useEffect, useRef} from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
+import axios from 'axios';
 import {
     Link, Redirect
 } from "react-router-dom";
@@ -212,15 +213,66 @@ function EditNews(props) {
 }
 
 function New(props) {
+    const [viewNew, setViewNew] = useState(null)
     useEffect(() => {
-        document.title = `${props.noticia.nombre} - Vista`
-    })
+        let active = true
+        const fetchData = async () => {
+            const instance = axios.create()
+            const response = await instance.get(`${props.backend}/news/${props.id}`,{})
+            if (response.data['status'] === 200) {
+                if (active) {
+                    setViewNew(response.data['noticia'])
+                    document.title = `${viewNew !== null ? viewNew.nombre:"Noticia"} - Vista`
+                }
+            }
+        }
+        fetchData()
+        return () => active = false
+    },[props.backend,props.id,viewNew])
+    let options = {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'};
+    return (
+    <Fragment>
+        {viewNew === null || viewNew === undefined ? <Fragment><h4>Noticia no encontrada</h4><br/><p>Si cree que esto es un error, por favor contacte al administrador.</p></Fragment>:""}
+        {viewNew  !== null && viewNew !== undefined ?
+        <Fragment>
+            <div className="u-text-center"><h2>{viewNew.nombre}</h2></div>
+            <div className="u-text-center"><p>{viewNew.resumen}</p></div>
+            <div className="row ignore-screen">
+                <div className="col-3 ignore-screen">
+                    <p><span className="red-font" style={{"fontWeight":"bold","fontSize":"14pt"}}>| {viewNew.categoria}</span></p>
+                    <p>Por: {viewNew.periodista}</p>
+                    <p>Fecha: {new Date(Date.parse(viewNew.fecha_creacion.split(" ")[0])).toLocaleString('es-ES', options)}</p>
+                    <p>Hora: {viewNew.fecha_creacion.split(" ")[1]}</p>
+                </div>
+                <div className="col-9 ignore-screen">
+                    <div className="u-text-center"><img src={viewNew.imagen} alt="Foto" className="news-photo"/></div>
+                </div>
+            </div>
+            <div className="u-text-center"><p style={{"whiteSpace":"pre-wrap"}}>{viewNew.descripcion}</p></div>
+        </Fragment>
+        : ""}
+    </Fragment>)
 }
+
 function News(props) {
+    const [news, setNews] = useState([])
     useEffect(() => {
-        document.title = "Noticias - Panel usuario"
-    })
-    let {user,news} = props;
+        let active = true;
+        props.setRedirectToNews(false)
+        const fetch = async () => {
+            document.title = "Noticias - Panel usuario"
+            const instance = axios.create()
+            const news = await instance.get(`${props.backend}/news`)
+            if (active) {            
+                setNews(news.data['data'])
+            }
+        }
+        fetch()
+        return () => {
+            active = false
+        }
+    },[props])
+    let {user} = props;
     return (
         <Fragment>
             <div className="content mt-5">
@@ -256,7 +308,6 @@ function News(props) {
                                 <th>Periodista</th>
                                 <th>Visible</th>
                                 <th>Categoría</th>
-                                <th>Resumen</th>
                                 <th>Ver noticia</th>
                                 <th>Acciones</th>
                             </tr>
@@ -271,7 +322,6 @@ function News(props) {
                                         <td>{noticia['periodista']}</td>
                                         <td>{noticia['visible'] === 1 ? "Sí":"No"}</td>
                                         <td>{noticia['categoria']}</td>
-                                        <td>{noticia['resumen']}</td>
                                         <td><Link to={`news/${noticia['id']}`}><button className="btn btn-success">Ver</button></Link></td>
                                         <td>
                                             <Link to="/news/edit"><button className="btn btn-info" noticia={noticia} onClick={() => {props.setEditingNew(noticia)}}>Editar</button></Link>
@@ -290,4 +340,4 @@ function News(props) {
 }
 
 export default News;
-export {CreateNews,EditNews};
+export {CreateNews,EditNews,New};

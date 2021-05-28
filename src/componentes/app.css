@@ -1,7 +1,19 @@
 .red-font {
     color:#b10012;
+    font-family:"dubai-font";
 }
 
 .overflow {
     overflow:auto;
+}
+
+.news-photo {
+    width:100% !important;
+    border-top:.5rem solid #b10012;
+}
+
+.footer {
+    background: #b10012;
+    padding: 4rem 0;
+    margin-top:0px !important;
 }

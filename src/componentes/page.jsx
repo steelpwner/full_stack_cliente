@@ -11,9 +11,10 @@ import Register from './register.jsx';
 import User from './user.jsx';
 import axios from 'axios';
 import News,{CreateNews,EditNews,New} from './news.jsx';
+import Footer from './footer';
 
 const categories = ["Deportes","Judicial","Economía","Sociales","Entretenimiento","Salud","Política"];
-const backend = "https://blue-shrimp-27.loca.lt"
+const backend = "http://localhost:4000"
 
 function Page() {
     const [user,setUser] = useState(null)
@@ -26,7 +27,6 @@ function Page() {
     const [newsSuccess, setNewsSuccess] = useState(null)
     const [redirectToNews, setRedirectToNews] = useState(null)
     const [editingNew,setEditingNew] = useState(null)
-
     function createNew(na,d,ne,v,c,r,i) {
         if (na !== "" && d !== "" && ne !== "" && v !== "" && c !== "" && r !== "" && i !== "") {
             let data = {"name":na,"description":d,"newsman":ne,"image":i,"visible":v,"category":c,"user":user['id'], "resume":r}
@@ -160,29 +160,23 @@ function Page() {
                             <div className="hero-body">
                                 <div className="content">
                                 <Switch>
-                                    <Route exact path ="/">
-                                        <Index/>
+                                    <Route exact path ="/" render={() => {
+                                        return (<Index news={news} backend={backend}/>)
+                                    }}>
                                     </Route>
                                     <Route exact path="/login">
                                         <Login login={login} user={user} token={token} setLoginError={setLoginError} loginError={loginError}/>
                                     </Route>
                                     <Route exact path="/news" render={(props) => {
-                                        getNews()
-                                        setRedirectToNews(null)
-                                        setEditingNew(null)
                                         return (
-                                        <News user={user} news={news} newsError={newsError} newsSuccess={newsSuccess} setNewsError={setNewsError} setNewsSuccess={setNewsSuccess} deleteNew={deleteNew}  setEditingNew={setEditingNew}/>)
+                                            <News user={user} news={news} newsError={newsError} newsSuccess={newsSuccess} setNewsError={setNewsError} setNewsSuccess={setNewsSuccess} deleteNew={deleteNew}  setEditingNew={setEditingNew} getNews={getNews} backend={backend} setRedirectToNews={setRedirectToNews}/>)
                                     }}/>
                                     <Route exact path="/news/create" render={(props) => {
-                                        setNewsError(null)
-                                        setNewsSuccess(null)
                                         return(
                                             <CreateNews user={user} categories={categories} redirectToNews={redirectToNews} createNew={createNew} newsError={newsError} setNewsError={setNewsError}/>
                                         )
                                     }}/>
                                     <Route exact path="/news/edit" render={(props) => {
-                                        setNewsError(null)
-                                        setNewsSuccess(null)
                                         return(
                                             <EditNews user={user} categories={categories} redirectToNews={redirectToNews} createNew={createNew} newsError={newsError} setNewsError={setNewsError} news={editingNew} editNew={editNew}/>
                                         )
@@ -191,15 +185,17 @@ function Page() {
                                         <Register signUpError={signUpError} user={user} signUp={signUp} setSignUpError={setSignUpError}/>
                                     </Route>
                                     <Route exact path="/user">
-                                        <User user={user} token={token}/>
+                                        <User user={user}/>
                                     </Route>
-                                    
+                                    <Route path="/news/:id" render={(props) => {
+                                        return (<New backend={backend} id={props.match.params.id}/>)
+                                    }}/>
                                 </Switch>
                                 </div>
                             </div>
                         </div>
                     </section>
-                    
+                    <Footer user={user} logout={logout}/>
             </Router>
         </Fragment>
     )

@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useRef} from 'react';
 import {
-    Link, Redirect
+    Redirect
 } from "react-router-dom";
 
 
@@ -16,6 +16,7 @@ function Register(props) {
     let phoneRef = useRef(null)
     let emailRef = useRef(null)
     let nameRef = useRef(null)
+
 
     function upload() {
         props.signUp(userRef.current.value,

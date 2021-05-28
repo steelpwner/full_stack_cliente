@@ -5,6 +5,7 @@ import {
 import './app.css';
 
 function Header(props) {
+    let {user,logout} = props
     return (
     <Fragment>
         <div className="header header-fixed u-unselectable header-animated">
@@ -28,7 +29,7 @@ function Header(props) {
                         <Link to="/">Inicio</Link>
                     </div>
 
-                    {props.user == null ? 
+                    {user == null ? 
                     <Fragment>
                         <div className="nav-item link">
                             <Link to="/login">Login</Link>
@@ -38,7 +39,7 @@ function Header(props) {
                         </div>
                     </Fragment>:""}
 
-                    {props.user != null ? 
+                    {user != null ? 
                     <Fragment>
                         <div className="nav-item link">
                             <Link to="/user">Panel usuario</Link>
@@ -47,7 +48,9 @@ function Header(props) {
                             <Link to="/news">Noticias</Link>
                         </div>
                         <div className="nav-item link">
-                            <Link to="#" onClick={props.logout}>Cerrar sesión</Link>
+                            <Link to="#" onClick={() => {
+                                logout()
+                            }}>Cerrar sesión</Link>
                         </div>
                     </Fragment>
                     :""}
