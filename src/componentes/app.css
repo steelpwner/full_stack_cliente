@@ -29,3 +29,7 @@
 .card__image {
     max-height: 248px !important;
 }
+
+table {
+    white-space: nowrap;
+}
