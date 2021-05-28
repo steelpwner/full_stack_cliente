@@ -23,7 +23,7 @@ function User(props) {
                         renderizarlas para que sean vistas por todo público y permitiendo
                         registrarse para guardar los datos.</p>
                     <Link to="/news">
-                        <button className="btn btn-link">
+                        <button className="btn btn-primary">
                             Ir a panel noticias
                         </button>
                     </Link>

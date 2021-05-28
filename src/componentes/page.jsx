@@ -14,7 +14,7 @@ import News,{CreateNews,EditNews,New} from './news.jsx';
 import Footer from './footer';
 
 const categories = ["Deportes","Judicial","Economía","Sociales","Entretenimiento","Salud","Política"];
-const backend = "http://localhost:4000"
+const backend = "http://24647ee548f324.localhost.run"
 
 function Page() {
     const [user,setUser] = useState(null)

@@ -25,3 +25,7 @@
 .heraldofont {
     font-family:"dubai-font";
 }
+
+.card__image {
+    max-height: 248px !important;
+}
