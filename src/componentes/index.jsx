@@ -31,7 +31,7 @@ function Index(props) {
                         <div className="col-4 ignore-screen" key={noticia['id']}>
                             <div className="card card--slide-up noticia">
                                     <div className="card__container">
-                                        <div className="card__image" style={{"backgroundImage":`url(${noticia['imagen']})`}}></div>
+                                        <Link to={`/news/${noticia['id']}`}><div className="card__image" style={{"backgroundImage":`url(${noticia['imagen']})`}}></div></Link>
                                     </div>
                                     <div className="card__mobile-title">
                                         <div className="content">

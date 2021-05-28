@@ -243,6 +243,7 @@ function New(props) {
                     <p>Por: {viewNew.periodista}</p>
                     <p>Fecha: {new Date(Date.parse(viewNew.fecha_creacion.split(" ")[0])).toLocaleString('es-ES', options)}</p>
                     <p>Hora: {viewNew.fecha_creacion.split(" ")[1]}</p>
+                    <p>Visible: {viewNew.visible}</p>
                 </div>
                 <div className="col-9 ignore-screen">
                     <div className="u-text-center"><img src={viewNew.imagen} alt="Foto" className="news-photo"/></div>
