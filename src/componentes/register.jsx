@@ -30,7 +30,7 @@ function Register(props) {
         <Fragment>
             <div className="card mt-5">
                 <div className="content u-text-center">
-                {props.user !== null ? <Redirect to="/user"></Redirect> : ""}
+                {props.user !== null ? <Redirect to="/news"></Redirect> : ""}
                 {props.signUpError != null ? <div className="toast toast--danger">
                                                 <button className="btn-close" onClick={() => { props.setSignUpError(null)}}></button>
                                                 <p>{props.signUpError}</p>

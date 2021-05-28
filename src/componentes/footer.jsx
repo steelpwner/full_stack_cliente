@@ -12,29 +12,29 @@ function Footer(props) {
 
                 <div className="row">
                     <div className="col-12">
-                        <ul className="no-bullets">
+                        <ul className="no-bullets u-justify-space-around u-flex	">
                             <Link to="/">
-                                <li className="footer__list-item white heraldofont">Inicio</li>
+                                <li className="footer__list-item white">Inicio</li>
                             </Link>
                             {props.user === null ? 
                             <Fragment>
                                 <Link to="/login">
-                                    <li className="footer__list-item white heraldofont">Login</li>
+                                    <li className="footer__list-item white">Login</li>
                                 </Link>
                                 <Link to="/register">
-                                    <li className="footer__list-item white heraldofont">Registro</li>
+                                    <li className="footer__list-item white">Registro</li>
                                 </Link>
                             </Fragment>
                                 :
                             <Fragment>
                                 <Link to="/user">
-                                    <li className="footer__list-item white heraldofont">Panel usuario</li>
+                                    <li className="footer__list-item white">Panel usuario</li>
                                 </Link>
                                 <Link to="/news">
-                                    <li className="footer__list-item white heraldofont">Noticias</li>
+                                    <li className="footer__list-item white">Noticias</li>
                                 </Link>
                                 <Link to="#" onClick={props.logout}>
-                                    <li className="footer__list-item white heraldofont">Cerrar sesión</li>
+                                    <li className="footer__list-item white">Cerrar sesión</li>
                                 </Link>
                             </Fragment>
                             }
@@ -42,7 +42,7 @@ function Footer(props) {
                     </div>
                 </div>
             </div>
-            <p className="subtitle white uppercase heraldofont">EL HERALDO © 2021.</p>
+            <p className="subtitle white uppercase">EL HERALDO © 2021.</p>
         </footer>
     )
 }

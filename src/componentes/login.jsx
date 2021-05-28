@@ -19,7 +19,7 @@ function Login(props) {
     return (
         <Fragment>
             <div className="card mt-5">
-                {props.user !== null ? <Redirect to="/user"></Redirect> : ""}
+                {props.user !== null ? <Redirect to="/news"></Redirect> : ""}
                 {props.loginError != null ? <div className="toast toast--danger">
                                                 <button className="btn-close" onClick={() => { props.setLoginError(null)}}></button>
                                                 <p>{props.loginError}</p>
