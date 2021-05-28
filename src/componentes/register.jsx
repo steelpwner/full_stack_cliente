@@ -53,7 +53,7 @@ function Register(props) {
                     </div>
                     <div className="row ignore-screen level">
                         <div className="col-3 ignore-screen level-item"><p className="m-0">Contraseña:</p></div>
-                        <div className="col-9 ignore-screen level-item"><input type="text" ref={passRef}/></div>
+                        <div className="col-9 ignore-screen level-item"><input type="password" ref={passRef}/></div>
                     </div>
                     <div className="row ignore-screen level">
                         <div className="col-3 ignore-screen level-item"><p className="m-0">Correo electrónico:</p></div>

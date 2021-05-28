@@ -10,17 +10,69 @@ import Index from './index.jsx';
 import Register from './register.jsx';
 import User from './user.jsx';
 import axios from 'axios';
-import News from './news.jsx';
+import News,{CreateNews,EditNews,New} from './news.jsx';
 
 const categories = ["Deportes","Judicial","Economía","Sociales","Entretenimiento","Salud","Política"];
-const backend = "http://localhost:4000"
+const backend = "https://blue-shrimp-27.loca.lt"
 
 function Page() {
-    let [user,setUser] = useState(null)
-    let [token, setToken] = useState(null)
-    let [loginError, setLoginError] = useState(null)
-    let [signUpError, setSignUpError] = useState(null)
-    let [sessionTimeout,setSessionTimeout] = useState(null)
+    const [user,setUser] = useState(null)
+    const [token, setToken] = useState(null)
+    const [loginError, setLoginError] = useState(null)
+    const [signUpError, setSignUpError] = useState(null)
+    const [sessionTimeout,setSessionTimeout] = useState(null)
+    const [news, setNews] = useState([])
+    const [newsError, setNewsError] = useState(null)
+    const [newsSuccess, setNewsSuccess] = useState(null)
+    const [redirectToNews, setRedirectToNews] = useState(null)
+    const [editingNew,setEditingNew] = useState(null)
+
+    function createNew(na,d,ne,v,c,r,i) {
+        if (na !== "" && d !== "" && ne !== "" && v !== "" && c !== "" && r !== "" && i !== "") {
+            let data = {"name":na,"description":d,"newsman":ne,"image":i,"visible":v,"category":c,"user":user['id'], "resume":r}
+            const instance = axios.create({
+                "headers":{"Authorization":`Bearer: ${token}`}
+            })
+            instance.post(`${backend}/news/create`, data)
+            .then(response => {
+                if (response.data['status'] === 422) {
+                    setNewsError(response.data['message'])
+                } else {                
+                    setRedirectToNews(true)
+                    setNewsSuccess(response.data['message'])
+                }
+                
+            })
+            .catch((error) => {
+            })
+        } else {
+            setNewsError("Por favor, llene todos los campos para poder crear una noticia")
+        }
+    }
+    
+    function editNew(id,na,d,ne,v,c,r,i) {
+        if (na !== "" && d !== "" && ne !== "" && v !== "" && c !== "" && r !== "" && i !== "" && id !== "") {
+            let data = {"name":na,"description":d,"newsman":ne,"image":i,"visible":v,"category":c, "resume":r, "id":id}
+            const instance = axios.create({
+                "headers":{"Authorization":`Bearer: ${token}`}
+            })
+            instance.put(`${backend}/news`, data)
+            .then(response => {
+                if (response.data['status'] === 422) {
+                    setNewsError(response.data['message'])
+                } else {                
+                    setRedirectToNews(true)
+                    setNewsSuccess(response.data['message'])
+                }
+                
+            })
+            .catch((error) => {
+            })
+        } else {
+            setNewsError("Por favor, llene todos los campos para poder editar una noticia")
+        }
+    }
+
     function login(u, p) {
         if (u !== "" && p !== "") {
             const instance = axios.create()
@@ -45,6 +97,34 @@ function Page() {
             setLoginError("Por favor, llene todos los campos para poder loguearse")
         }
     }
+
+    function getNews() {
+        const instance = axios.create()
+        instance.get(`${backend}/news`)
+        .then(response=>{
+            if (response.data != null) {            
+                setNews(response.data['data'])
+            }
+        })
+    }
+
+    function deleteNew(id) {
+        const instance = axios.create({
+            "headers":{"Authorization":`Bearer: ${token}`}
+        })
+        instance.delete(`${backend}/news`,{data:{"id":id}})
+        .then(response=>{
+            if (response.data != null) {    
+                if (response.data['status'] === 422) {
+                    setNewsError(response.data['message'])
+                } else {
+                    setNewsSuccess(response.data['message'])
+                    getNews()
+                }
+            }
+        })
+    }
+
     function signUp(u, pa, a, ph, e, n) {
         if (u !== "" && pa !== "" && a !== "" && ph !== "" && e !== "" && n !== "") {
             const instance = axios.create()
@@ -61,8 +141,9 @@ function Page() {
         } else {
             setSignUpError("Por favor llene todos los datos para poder registrarse")
         }
-        
     }
+
+
 
     function logout() {
         clearTimeout(sessionTimeout)
@@ -85,15 +166,34 @@ function Page() {
                                     <Route exact path="/login">
                                         <Login login={login} user={user} token={token} setLoginError={setLoginError} loginError={loginError}/>
                                     </Route>
-                                    <Route exact path="/news">
-                                        <News user={user} token={token}/>
-                                    </Route>
+                                    <Route exact path="/news" render={(props) => {
+                                        getNews()
+                                        setRedirectToNews(null)
+                                        setEditingNew(null)
+                                        return (
+                                        <News user={user} news={news} newsError={newsError} newsSuccess={newsSuccess} setNewsError={setNewsError} setNewsSuccess={setNewsSuccess} deleteNew={deleteNew}  setEditingNew={setEditingNew}/>)
+                                    }}/>
+                                    <Route exact path="/news/create" render={(props) => {
+                                        setNewsError(null)
+                                        setNewsSuccess(null)
+                                        return(
+                                            <CreateNews user={user} categories={categories} redirectToNews={redirectToNews} createNew={createNew} newsError={newsError} setNewsError={setNewsError}/>
+                                        )
+                                    }}/>
+                                    <Route exact path="/news/edit" render={(props) => {
+                                        setNewsError(null)
+                                        setNewsSuccess(null)
+                                        return(
+                                            <EditNews user={user} categories={categories} redirectToNews={redirectToNews} createNew={createNew} newsError={newsError} setNewsError={setNewsError} news={editingNew} editNew={editNew}/>
+                                        )
+                                    }}/>
                                     <Route exact path="/register">
                                         <Register signUpError={signUpError} user={user} signUp={signUp} setSignUpError={setSignUpError}/>
                                     </Route>
                                     <Route exact path="/user">
                                         <User user={user} token={token}/>
                                     </Route>
+                                    
                                 </Switch>
                                 </div>
                             </div>

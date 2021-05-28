@@ -11,7 +11,7 @@ function Header(props) {
             <div className="header-brand">
                 
                 <div className="nav-item no-hover">
-                    <Link to="/"><h4 className="title red-font">EL HERALDO</h4></Link>
+                    <Link to="/"><h4 className="title red-font" style={{"fontFamily":"dubai-font"}}>EL HERALDO</h4></Link>
                 </div>
                 <div className="nav-item nav-btn" id="header-btn">
                     <span></span>
@@ -47,7 +47,7 @@ function Header(props) {
                             <Link to="/news">Noticias</Link>
                         </div>
                         <div className="nav-item link">
-                            <a onClick={props.logout}>Cerrar sesión</a>
+                            <Link to="#" onClick={props.logout}>Cerrar sesión</Link>
                         </div>
                     </Fragment>
                     :""}
