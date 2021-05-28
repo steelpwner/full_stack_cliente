@@ -182,7 +182,7 @@ function EditNews(props) {
                             <p className="m-0">Visible:</p>
                         </div>
                         <div className="col-9 ignore-screen level-item">
-                            <select ref={visible} defaultValue={news['visible'] || ''}>
+                            <select ref={visible} defaultValue={news['visible']}>
                                 <option value="1">Sí</option>
                                 <option value="0">No</option>
                             </select>
