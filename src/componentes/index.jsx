@@ -29,7 +29,7 @@ function Index(props) {
                 <Fragment>{news.slice(0,6).map((noticia) => {
                     return(
                         <div className="col-4 ignore-screen" key={noticia['id']}>
-                            <div className="card card--slide-up">
+                            <div className="card card--slide-up noticia">
                                     <div className="card__container">
                                         <div className="card__image" style={{"backgroundImage":`url(${noticia['imagen']})`}}></div>
                                     </div>
